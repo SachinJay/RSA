@@ -62,14 +62,11 @@ class ModOpsTests
 		assertEquals(1, reduceMod(-4L, 5L));
 		assertEquals(0, reduceMod(-5L, 5L));
 		
-		System.out.println(210776L*210776L);
 		assertEquals(457959L, reduceMod(210776L*210776L,496597L));
 		
 		
-		
-		System.out.println(reduceMod(fastExp(210776L,4,496597L) * fastExp(210776L,4,496597L), 496597L));
-		
-		System.out.println(Long.MAX_VALUE);
+		System.out.println(reduceMod(fastExp(210776L,4,496597L) * fastExp(210776L,4,496597L),496597L));
+		System.out.println(fastExp(210776L,8,496597L));
 		
 	}
 
