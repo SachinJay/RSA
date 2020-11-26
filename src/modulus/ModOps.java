@@ -1,5 +1,7 @@
 package modulus;
 
+import java.math.BigInteger;
+
 public class ModOps
 {
 	/**
@@ -10,17 +12,17 @@ public class ModOps
 	 * @param m modulus
 	 * @return
 	 */
-	public static long fastExp(long a, long b, long m)
+	public static BigInteger fastExp(BigInteger a, BigInteger b, BigInteger m)
 	{
 		int[] arr = breakUpExponent(b);
-		long ans = 1L;
+		BigInteger ans = BigInteger.ONE;
 
 		for (int i = 0; i < arr.length; i++)
 		{
-			ans *= ans;
-			ans %= m;
-			if (arr[i] == 1) ans *= a;
-			ans %= m;
+			ans = ans.multiply(ans);
+			ans = ans.mod(m);
+			if (arr[i] == 1) ans = ans.multiply(a);
+			ans = ans.mod(m);
 		}
 
 		return ans;
@@ -33,10 +35,10 @@ public class ModOps
 	 * @return the binary version of the exponent in the form of an array. For
 	 *         example: exp = 19 yields [1,0,0,1,1] since 19 in binary is 10011
 	 */
-	public static int[] breakUpExponent(long exp)
+	public static int[] breakUpExponent(BigInteger exp)
 	{
 		// Get the binary string of the exponent
-		String bin = Long.toBinaryString(exp);
+		String bin = exp.toString(2);
 
 		int[] arr = new int[bin.length()];
 
