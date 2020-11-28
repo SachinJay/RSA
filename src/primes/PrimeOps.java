@@ -56,6 +56,48 @@ public class PrimeOps
 		// If the number is even, return false
 		if (candidate.mod(BigInteger.TWO).toString() == BigInteger.ZERO.toString()) return false;
 
+		// Are looking for nontrivial square roots of 1 mod candidate
+		// For a witness a in [1,candidate-1], if candidate is prime then
+		// a^d = 1 mod candidate or a ^{2^s * d} = -1 mod candidate
+		// where n - 1 = 2^s * d with d odd
+		// So for a random witness in the range, if both things don't hold, def
+		// composite
+		// However, if either one holds, it could be prime
+
+		// Find s and d
+		int s = 0;
+		BigInteger d = candidate.subtract(BigInteger.ONE);
+		while (d.mod(BigInteger.TWO) == BigInteger.ZERO) // while d is even
+		{
+			s++;
+			d = d.divide(BigInteger.TWO);
+		}
+
+		// Do numTests tests
+		for (int i = 0; i < numTests; i++)
+		{
+			// randomly generate a base
+			BigInteger a = new BigInteger();
+
+			BigInteger first = a.pow(Integer.parseInt(d.toString())); // a^d != 1 mod candidate test
+			first = first.mod(candidate);
+
+			if (first.toString() != BigInteger.ONE.toString()
+					&& first.toString() != candidate.subtract(BigInteger.ONE).toString()) // if first test of
+																							// compositeness passed, do
+																							// second test
+			{
+				// is a^{2^r * d} not congruent to -1 for all r from 0 to s-1
+				int r = 1;
+				while (r < s && first != BigInteger.ONE)
+				{
+					// TODO Implement and check that all the conidions check for equality right with
+					// the big integers
+				}
+			}
+
+		}
+
 	}
 
 	/**
