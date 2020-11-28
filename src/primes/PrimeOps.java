@@ -82,10 +82,8 @@ public class PrimeOps
 			BigInteger first = a.pow(Integer.parseInt(d.toString())); // a^d != 1 mod candidate test
 			first = first.mod(candidate);
 
-			if (first.toString() != BigInteger.ONE.toString()
-					&& first.toString() != candidate.subtract(BigInteger.ONE).toString()) // if first test of
-																							// compositeness passed, do
-																							// second test
+			// if first test of compositeness passed, do second test
+			if (!first.equals(BigInteger.ONE) && !first.toString().equals(candidate.subtract(BigInteger.ONE)))
 			{
 				// is a^{2^r * d} not congruent to -1 for all r from 0 to s-1
 				int r = 1;
