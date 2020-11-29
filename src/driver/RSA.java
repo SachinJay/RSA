@@ -71,17 +71,26 @@ public class RSA
 	 * 
 	 * @param message
 	 * @param key
-	 * @return
+	 * @return the ciphertext
 	 */
 	public static BigInteger encrypt(BigInteger message, PublicKey key)
 	{
-		return null;
+		return ModOps.fastExp(message, key.getEncryptionKey(), key.getModulus());
 
 	}
 
-	public static BigInteger decrypt(BigInteger cyphertext, PublicKey key, BigInteger phi)
+	/**
+	 * Decrypts the ciphertext
+	 * 
+	 * @param ciphertext the encrypted message
+	 * @param key        the public key
+	 * @param phi        the private phi
+	 * @return the original message
+	 */
+	public static BigInteger decrypt(BigInteger ciphertext, PublicKey key, BigInteger phi)
 	{
-		return null;
+		BigInteger d = getDecryptionKey(key.getEncryptionKey(), phi);
+		return ModOps.fastExp(ciphertext, d, key.getModulus());
 
 	}
 }
