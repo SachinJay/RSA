@@ -59,18 +59,20 @@ public class ModOps
 	 * @return array whose first element is the gcd of a and b. arr[0] = a*arr[1] +
 	 *         b*arr[2]
 	 */
-	public static int[] extendedEuclid(int a, int b)
+	public static BigInteger[] extendedEuclid(BigInteger a, BigInteger b)
 	{
 		// Base case: if b is 0 then a is the gcd and a = 1*a + 0*b
-		if (b == 0) return new int[] { a, 1, 0 };
+		if (b.equals(BigInteger.ZERO)) return new BigInteger[] { a, BigInteger.ONE, BigInteger.ZERO };
 
 		// array to keep track of intermediate values
-		int[] track = extendedEuclid(b, a % b);
-		int gcd = track[0];
-		int x = track[2];
-		int y = track[1] - ((a / b) * track[2]);
+		BigInteger[] track = extendedEuclid(b, a.mod(b));
+		BigInteger gcd = track[0];
+		BigInteger x = track[2];
+		BigInteger y = a.divide(b);
+		y = y.multiply(track[2]);
+		y = track[1].subtract(y);
 
-		return new int[] { gcd, x, y };
+		return new BigInteger[] { gcd, x, y };
 	}
 
 }
