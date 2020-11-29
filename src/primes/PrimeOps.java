@@ -3,6 +3,7 @@ package primes;
 import java.math.BigInteger;
 import java.util.Random;
 
+import modulus.ModOps;
 import utils.Constants;
 
 public class PrimeOps
@@ -79,7 +80,7 @@ public class PrimeOps
 			// randomly generate a base between 1 and candidate-1
 			BigInteger a = genBigInt(BigInteger.ONE, candidate.subtract(BigInteger.ONE));
 
-			BigInteger condition = a.pow(Integer.parseInt(d.toString())); // a^d != 1 mod candidate test
+			BigInteger condition = ModOps.fastExp(a, d, candidate); // a^d != 1 mod candidate test
 			condition = condition.mod(candidate);
 
 			// if first test of compositeness passed, do second test
