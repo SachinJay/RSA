@@ -12,4 +12,9 @@ public class Constants
 	 */
 	public static final BigInteger COMMON_E = new BigInteger("65537");
 
+	/**
+	 * When making plaintext into numbers, use this base
+	 */
+	public static final int cipherRadix = 28;
+
 }

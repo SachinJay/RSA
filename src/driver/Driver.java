@@ -13,6 +13,8 @@ public class Driver
 		System.out.println(RSA.encrypt(new BigInteger("2800"), pk));
 		System.out.println(RSA.decrypt(new BigInteger("210776"), pk, phi));
 
+		System.out.println(RSA.numberify(" "));
+
 	}
 
 }

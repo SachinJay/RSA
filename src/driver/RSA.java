@@ -93,4 +93,40 @@ public class RSA
 		return ModOps.fastExp(ciphertext, d, key.getModulus());
 
 	}
+
+	/**
+	 * Creates the numerical message from a plaintext string
+	 * 
+	 * @param msg the plaintext string. Must only contain letters and spaces
+	 * @return the number representing that plaintext, ready to be encrypted
+	 */
+	public static BigInteger numberify(String msg)
+	{
+		// Check for proper format
+		for (int i = 0; i < msg.length(); i++)
+		{
+			// If it's not a letter and not a space
+			if (!Character.isLetter(msg.charAt(i)) && msg.substring(i, i + 1) != " ")
+				throw new IllegalArgumentException("Message can only have letters and spaces");
+		}
+
+		msg = msg.toUpperCase();
+
+		String numRep = "";
+		int base = (int) 'A';
+		for (int i = 0; i < msg.length(); i++)
+		{
+			char ch = msg.charAt(i);
+			if (Character.isLetter(ch))
+			{
+				int diff = ch - base;
+				if (diff < 10) numRep = numRep + diff;
+				else numRep = numRep + (char) (diff - 10 + base);
+			}
+
+			else numRep = numRep + "r";
+		}
+
+		return new BigInteger(numRep, 28);
+	}
 }
