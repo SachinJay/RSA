@@ -38,6 +38,7 @@ class PrimeOpsTests
 		assertFalse(isPrime(new BigInteger("90751"), 100));
 		assertFalse(isPrime(new BigInteger("486737"), 100));
 		assertFalse(isPrime(new BigInteger("3215031751"), 100));
+		assertFalse(isPrime(new BigInteger("341550071728321"), 100));
 
 		System.out.println(genPrime(500));
 
