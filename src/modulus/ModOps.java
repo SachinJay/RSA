@@ -52,18 +52,25 @@ public class ModOps
 	}
 
 	/**
-	 * Calculates totient of m
+	 * Returns gcd(a,b) as well as the bezout coefficients
 	 * 
-	 * @param m
-	 * @return //
+	 * @param a
+	 * @param b
+	 * @return array whose first element is the gcd of a and b. arr[0] = a*arr[1] +
+	 *         b*arr[2]
 	 */
-//	public static int totient(int m)
-//	{
-//		
-//	}
+	public static int[] extendedEuclid(int a, int b)
+	{
+		// Base case: if b is 0 then a is the gcd and a = 1*a + 0*b
+		if (b == 0) return new int[] { a, 1, 0 };
 
-//	public static boolean isPrime()
-//	{
-//		
-//	}
+		// array to keep track of intermediate values
+		int[] track = extendedEuclid(b, a % b);
+		int gcd = track[0];
+		int x = track[2];
+		int y = track[1] - ((a / b) * track[2]);
+
+		return new int[] { gcd, x, y };
+	}
+
 }

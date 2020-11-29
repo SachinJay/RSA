@@ -1,5 +1,6 @@
 package tests;
 
+import static modulus.ModOps.extendedEuclid;
 import static modulus.ModOps.fastExp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,6 +33,27 @@ class ModOpsTests
 		bi = bi.add(bi);
 		System.out.println(bi);
 		System.out.println(bi.mod(new BigInteger("2")));
+	}
+
+	@Test
+	void extendedEuclidTests()
+	{
+		int e = 5;
+		int phi = 1;
+
+		int[] arr = extendedEuclid(e, phi);
+		assertEquals(1, arr[0]);
+		assertEquals(0, arr[1]);
+		assertEquals(1, arr[2]);
+
+		e = 234559;
+		phi = 786 * 630;
+		arr = extendedEuclid(e, phi);
+		assertEquals(1, arr[0]);
+		assertEquals(19, arr[1]); // decryption key
+		arr = extendedEuclid(phi, e);
+		assertEquals(1, arr[0]);
+		assertEquals(19, arr[2]);
 	}
 
 }
