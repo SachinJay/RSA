@@ -51,10 +51,10 @@ public class PrimeOps
 		// TODO finish implementing
 
 		// Get the case where the candidate is 2 out of the way
-		if (candidate.toString().equals(BigInteger.TWO.toString())) return true;
+		if (candidate.equals(BigInteger.TWO)) return true;
 
 		// If the number is even, return false
-		if (candidate.mod(BigInteger.TWO).toString() == BigInteger.ZERO.toString()) return false;
+		if (candidate.mod(BigInteger.TWO).equals(BigInteger.ZERO)) return false;
 
 		// Are looking for nontrivial square roots of 1 mod candidate
 		// For a witness a in [1,candidate-1], if candidate is prime then
@@ -76,25 +76,32 @@ public class PrimeOps
 		// Do numTests tests
 		for (int i = 0; i < numTests; i++)
 		{
-			// randomly generate a base
-			BigInteger a = new BigInteger();
+			// randomly generate a base between 1 and candidate-1
+			BigInteger a = genBigInt(BigInteger.ONE, candidate.subtract(BigInteger.ONE));
 
-			BigInteger first = a.pow(Integer.parseInt(d.toString())); // a^d != 1 mod candidate test
-			first = first.mod(candidate);
+			BigInteger condition = a.pow(Integer.parseInt(d.toString())); // a^d != 1 mod candidate test
+			condition = condition.mod(candidate);
 
 			// if first test of compositeness passed, do second test
-			if (!first.equals(BigInteger.ONE) && !first.toString().equals(candidate.subtract(BigInteger.ONE)))
+			if (!condition.equals(BigInteger.ONE) && !condition.equals(candidate.subtract(BigInteger.ONE)))
 			{
 				// is a^{2^r * d} not congruent to -1 for all r from 0 to s-1
 				int r = 1;
-				while (r < s && first != BigInteger.ONE)
+				while (r < s && !condition.equals(candidate.subtract(BigInteger.ONE)))
 				{
-					// TODO Implement and check that all the conidions check for equality right with
+					// TODO Implement and check that all the conditions check for equality right
+					// with
 					// the big integers
-				}
-			}
+					condition = condition.pow(2).mod(candidate);
 
+					if (condition.equals(BigInteger.ONE)) return false;
+					r++;
+				}
+				if (!condition.equals(candidate.subtract(BigInteger.ONE))) return false;
+			}
 		}
+
+		return true;
 
 	}
 
@@ -115,6 +122,27 @@ public class PrimeOps
 		}
 
 		return primeCand;
+	}
+
+	/**
+	 * Randomly generates biginteger in the given range
+	 * 
+	 * @param min min value allowed
+	 * @param max max value allowed
+	 * @return random big int in the range
+	 */
+	public static BigInteger genBigInt(BigInteger min, BigInteger max)
+	{
+		Random rand = new Random();
+		BigInteger range = max.subtract(min);
+		int bitlen = range.bitLength();
+		BigInteger a = new BigInteger(bitlen, rand);
+
+		if (a.compareTo(min) < 0) a = a.add(min); // if too low, add lower limit
+		if (a.compareTo(range) >= 0) a = a.mod(range).add(min); // if too high mod it and add to it
+
+		return a;
+
 	}
 
 }
