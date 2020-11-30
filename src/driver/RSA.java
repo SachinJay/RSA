@@ -102,11 +102,14 @@ public class RSA
 	 */
 	public static BigInteger numberify(String msg)
 	{
+		// Remove all spaces in order to check everything else is a letter
+		String checkMsg = msg.replaceAll("\\s", "");
+
 		// Check for proper format
-		for (int i = 0; i < msg.length(); i++)
+		for (int i = 0; i < checkMsg.length(); i++)
 		{
-			// If it's not a letter and not a space
-			if (!Character.isLetter(msg.charAt(i)) && msg.substring(i, i + 1) != " ")
+			// If it's not a letter (spaces were removed)
+			if (!Character.isLetter(checkMsg.charAt(i)))
 				throw new IllegalArgumentException("Message can only have letters and spaces");
 		}
 
@@ -119,14 +122,42 @@ public class RSA
 			char ch = msg.charAt(i);
 			if (Character.isLetter(ch))
 			{
-				int diff = ch - base;
+				int diff = ch - base + 1; // add one so that we never use 0 cuz that would cause issue with leading 0s
 				if (diff < 10) numRep = numRep + diff;
 				else numRep = numRep + (char) (diff - 10 + base);
 			}
 
-			else numRep = numRep + "r";
+			else numRep = numRep + Constants.LAST_DIG; // if it's a space use the last digit in the base
 		}
 
-		return new BigInteger(numRep, 28);
+		return new BigInteger(numRep, Constants.CIPHER_RADIX);
+	}
+
+	/**
+	 * Precondition: msg must be a numberified message in the correct base
+	 * 
+	 * @param msg numberified message
+	 * @return plaintext character message
+	 */
+	public static String deNumberify(BigInteger msg)
+	{
+		String message = msg.toString(Constants.CIPHER_RADIX);
+		int base = (int) 'A';
+		String retMessage = "";
+		for (int i = 0; i < message.length(); i++)
+		{
+			String curDig = message.substring(i, i + 1);
+			Integer curInt = Integer.parseInt(curDig, Constants.CIPHER_RADIX);
+			int newInt = curInt + base - 1; // minus one to make up for the fact we exclude 0
+			char newChar = (char) newInt;
+			String add = "";
+			if (curDig.equals(Constants.LAST_DIG)) add = " ";
+			else add = String.valueOf(newChar);
+
+			retMessage = retMessage + add;
+		}
+
+		return retMessage;
+
 	}
 }
