@@ -45,6 +45,7 @@ public class ModOps
 		// Convert to array of integers
 		for (int i = 0; i < bin.length(); i++)
 		{
+//			System.out.println("input string: " + bin.substring(i, i + 1));
 			arr[i] = Integer.parseInt(bin.substring(i, i + 1));
 		}
 

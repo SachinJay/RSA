@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import modulus.ModOps;
 import primes.PrimeOps;
 import utils.Constants;
+import utils.Pair;
 
 public class RSA
 {
@@ -57,6 +58,27 @@ public class RSA
 	}
 
 	/**
+	 * Generates and returns the public key
+	 * 
+	 * @return a pair whose first element is the public key and whose second element
+	 *         is the private (decryption) key
+	 */
+	public static Pair<PublicKey, BigInteger> genPublicKey()
+	{
+		BigInteger[] mAndPhi = genModulus();
+		BigInteger m = mAndPhi[0];
+		BigInteger phi = mAndPhi[1];
+		BigInteger e = genEncryptionKey(phi);
+
+		PublicKey pk = new PublicKey(e, m);
+		BigInteger d = getDecryptionKey(e, phi);
+
+		Pair<PublicKey, BigInteger> p = new Pair<PublicKey, BigInteger>(pk, d);
+
+		return p;
+	}
+
+	/**
 	 * 
 	 * @param e   the encryption key
 	 * @param phi the modulus for which we are trying <b>e</b>'s inverse
@@ -84,12 +106,11 @@ public class RSA
 	 * 
 	 * @param ciphertext the encrypted message
 	 * @param key        the public key
-	 * @param phi        the private phi
+	 * @param d          the private decryption key
 	 * @return the original message
 	 */
-	public static BigInteger decrypt(BigInteger ciphertext, PublicKey key, BigInteger phi)
+	public static BigInteger decrypt(BigInteger ciphertext, PublicKey key, BigInteger d)
 	{
-		BigInteger d = getDecryptionKey(key.getEncryptionKey(), phi);
 		return ModOps.fastExp(ciphertext, d, key.getModulus());
 
 	}
